@@ -3,6 +3,7 @@ mod icpc {
         pub mod blueberry_waffle;
         pub mod fading_wind;
         pub mod restaurant_opening;
+        pub mod streets_ahead;
     }
 }
 
@@ -12,6 +13,7 @@ pub fn call_solution(solution: &str) {
         "fading_wind" => icpc::se_reg_22::fading_wind::main(),
         "restaurant_opening" => icpc::se_reg_22::restaurant_opening::main(),
         "restaurant_opening_n2" => icpc::se_reg_22::restaurant_opening::main_n2(),
+        "streets_ahead" => icpc::se_reg_22::streets_ahead::main(),
         _ => println!("No solution for {}", solution),
     }
 }
