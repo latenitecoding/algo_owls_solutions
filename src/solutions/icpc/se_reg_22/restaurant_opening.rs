@@ -1,30 +1,59 @@
-use std::cmp;
-use std::io;
+use std::{cmp, fmt::Debug, io, str::FromStr};
+
+//============================================
+// StdIn Helpers
+//============================================
+
+#[allow(unused)]
+#[inline(always)]
+fn next<T: FromStr>(buffer: &mut String) -> T
+where
+    <T as FromStr>::Err: Debug,
+{
+    io::stdin().read_line(buffer).unwrap();
+    buffer.trim().parse::<T>().unwrap()
+}
+
+#[allow(unused)]
+#[inline(always)]
+fn next_tuple<T: FromStr>(buffer: &mut String) -> (T, T)
+where
+    <T as FromStr>::Err: Debug,
+{
+    io::stdin().read_line(buffer).unwrap();
+    let mut iter = buffer.trim().split(' ').map(|s| s.parse::<T>().unwrap());
+    (iter.next().unwrap(), iter.next().unwrap())
+}
+
+#[allow(unused)]
+#[inline(always)]
+fn next_vec<T: FromStr>(buffer: &mut String) -> Vec<T>
+where
+    <T as FromStr>::Err: Debug,
+{
+    io::stdin().read_line(buffer).unwrap();
+    buffer
+        .trim()
+        .split(' ')
+        .map(|s| s.parse::<T>().unwrap())
+        .collect::<Vec<T>>()
+}
+
+//============================================
+// Solution
+//============================================
 
 pub fn main() {
-    let (n, m) = {
-        let mut buffer = String::new();
-        io::stdin().read_line(&mut buffer).unwrap();
-        let params: Vec<i32> = buffer
-            .trim()
-            .split(' ')
-            .map(|s| s.parse::<i32>().unwrap())
-            .collect();
-        (params[0], params[1])
-    };
+    let (n, m) = next_tuple::<i32>(&mut String::new());
     let mut grid = [[0; 50]; 50];
+
+    let mut buffer = String::new();
     for grid_i in grid.iter_mut().take(n as usize) {
-        let gs: Vec<i32> = {
-            let mut buffer = String::new();
-            io::stdin().read_line(&mut buffer).unwrap();
-            buffer
-                .trim()
-                .split(' ')
-                .map(|s| s.parse::<i32>().unwrap())
-                .collect()
-        };
+        let gs = next_vec::<i32>(&mut buffer);
         grid_i[..(m as usize)].copy_from_slice(&gs[..(m as usize)]);
+        buffer.clear();
     }
+
     let mut min_cost = i32::MAX;
     for r_1 in 0..n {
         for c_1 in 0..m {
@@ -42,21 +71,13 @@ pub fn main() {
 }
 
 pub fn main_n2() {
-    let (n, m) = {
-        let mut buffer = String::new();
-        io::stdin().read_line(&mut buffer).unwrap();
-        let params: Vec<usize> = buffer
-            .trim()
-            .split(' ')
-            .map(|s| s.parse::<usize>().unwrap())
-            .collect();
-        (params[0], params[1])
-    };
+    let (n, m) = next_tuple::<usize>(&mut String::new());
 
     let mut row_sums = [0u16; 50];
     let mut col_sums = [0u16; 50];
     let mut grid_sum = 0u32;
     let mut cost_i = 0u32;
+
     let mut buffer = String::new();
     for i in 0..n {
         io::stdin().read_line(&mut buffer).unwrap();
