@@ -79,7 +79,7 @@ pub fn main_n2() {
     let mut cost_i = 0u32;
 
     let mut buffer = String::new();
-    for i in 0..n {
+    for (i, row_sum) in row_sums.iter_mut().enumerate().take(n) {
         io::stdin().read_line(&mut buffer).unwrap();
         buffer
             .trim()
@@ -88,7 +88,7 @@ pub fn main_n2() {
             .enumerate()
             .take(m)
             .for_each(|(j, g_ij)| {
-                row_sums[i] += g_ij as u16;
+                *row_sum += g_ij as u16;
                 col_sums[j] += g_ij as u16;
                 grid_sum += g_ij as u32;
                 cost_i += ((i as u32) + (j as u32)) * (g_ij as u32);
@@ -101,18 +101,18 @@ pub fn main_n2() {
     cost_i += grid_sum; // avoids needing to use conditional branching in the loops
 
     let mut lhs_i = 0u32;
-    for i in 0..n {
-        cost_i = cost_i + 2 * lhs_i - grid_sum;
+    for &row_sum in row_sums.iter().take(n) {
+        cost_i += 2 * lhs_i - grid_sum;
 
-        let mut cost_j = cost_i + grid_sum;
+        let mut cost_j = cost_i + grid_sum; // see comment above
         let mut lhs_j = 0u32;
-        for j in 0..m {
-            cost_j = cost_j + 2 * lhs_j - grid_sum;
+        for &col_sum in col_sums.iter().take(m) {
+            cost_j += 2 * lhs_j - grid_sum;
             min_cost = cmp::min(min_cost, cost_j);
-            lhs_j += col_sums[j] as u32;
+            lhs_j += col_sum as u32;
         }
 
-        lhs_i += row_sums[i] as u32;
+        lhs_i += row_sum as u32;
     }
 
     println!("{}", min_cost);
