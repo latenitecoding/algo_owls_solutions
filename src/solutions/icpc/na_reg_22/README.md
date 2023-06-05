@@ -12,8 +12,8 @@ Testcases are located at [Judging](http://serjudging.vanb.org/?cat=44)
 - [x] [Blueberry Waffle](https://open.kattis.com/problems/blueberrywaffle)
 - [x] [Restaurant Opening](https://open.kattis.com/problems/restaurantopening)
 - [x] [Streets Ahead](https://open.kattis.com/problems/streetsahead)
-- [ ] [Sun and Moon](https://open.kattis.com/problems/sunandmoon)
-- [ ] [Hunt the Wumpus](https://open.kattis.com/problems/huntthewumpus)
+- [x] [Sun and Moon](https://open.kattis.com/problems/sunandmoon)
+- [x] [Hunt the Wumpus](https://open.kattis.com/problems/huntthewumpus)
 
 **Medium**
 
