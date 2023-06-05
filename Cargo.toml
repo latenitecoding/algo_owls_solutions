@@ -8,3 +8,12 @@ edition = "2021"
 [dependencies]
 cargo-eval = "0.1.0"
 clap = { version = "4.2.7", features = ["derive"] }
+
+[dev-dependencies]
+criterion = "0.5.1"
+rand = "0.8.5"
+
+[[bench]]
+name = "restaurant_opening_bench"
+path = "benches/icpc/na_reg_22/restaurant_opening_bench.rs"
+harness = false
