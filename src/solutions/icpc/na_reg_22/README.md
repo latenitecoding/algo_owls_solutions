@@ -18,7 +18,7 @@ Testcases are located at [Judging](http://serjudging.vanb.org/?cat=44)
 **Medium**
 
 - [x] [Champernowne Count](https://open.kattis.com/problems/champernownecount)
-- [ ] [Repetitive Song](https://open.kattis.com/problems/repetitivesong)
+- [x] [Repetitive Song](https://open.kattis.com/problems/repetitivesong)
 - [ ] [I Could Have Won](https://open.kattis.com/problems/icouldhavewon)
 - [ ] [Three Dice](https://open.kattis.com/problems/threedice)
 - [ ] [Everything Is A Nail](https://open.kattis.com/problems/everythingisanail)
