@@ -13,12 +13,12 @@ func main() {
 	var hFlag = flag.Bool("h", false, "Print help")
 	var versionFlag = flag.Bool("version", false, "Print version")
 	var vFlag = flag.Bool("V", false, "Print version")
-	var solutionFlag = flag.String("solution", "hello", "Executes target solution")
-	var sFlag = flag.String("s", "hello", "Executes target solution")
+	var solutionFlag = flag.String("solution", "", "Executes target solution")
+	var sFlag = flag.String("s", "", "Executes target solution")
 
 	flag.Parse()
 
-	if *helpFlag || *hFlag {
+	if *helpFlag || *hFlag || (*solutionFlag == "" || *sFlag == "") {
 		fmt.Println("Usage: algo_owls --solution <SOLUTION>")
 		fmt.Println()
 		fmt.Println("Options:")
@@ -33,7 +33,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	if *solutionFlag != "hello" {
+	if *solutionFlag != "" {
 		solutions.CallSolution(*solutionFlag)
 	} else {
 		solutions.CallSolution(*sFlag)
