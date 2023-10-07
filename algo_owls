@@ -1,0 +1,26 @@
+#!/bin/bash
+# NOTE: Update these variables to target different files with this script. #
+MAIN="main.go"
+# ======================================================================== #
+if [[ $1 == -* ]]
+then
+    go run src/$MAIN $@
+elif [[ $1 == "build" || $1 == "run" ]]
+then
+    go build -o target src/$MAIN
+
+    if [[ $1 == "run" ]]
+    then
+        "./target/${MAIN%.*}" "${@:2}"
+    fi
+elif [[ $1 == "test" ]]
+then
+    ./quest $2
+elif [[ $1 == "clean" ]]
+then
+    rm -r target/*
+else
+    echo "Usage: algo_owls --solution <SOLUTION>"
+    echo ""
+    echo "For more information, try '--help'."
+fi
