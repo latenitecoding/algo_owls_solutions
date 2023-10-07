@@ -13,9 +13,30 @@ then
     then
         "./target/${MAIN%.*}" "${@:2}"
     fi
-elif [[ $1 == "test" ]]
+elif [[ $1 == "test" || $1 == "quest" ]]
 then
-    ./quest $2
+    FLAG=true
+
+    for IN_FILE in $(find tests/$2/ -name "*.in")
+    do
+        ANS_FILE="${IN_FILE%.*}.ans"
+        if diff -u --suppress-common-lines --label $ANS_FILE --label $2 --strip-trailing-cr -d --speed-large-files --color $ANS_FILE <(go run src/$MAIN --solution $2 < $IN_FILE)
+        then
+            echo -e "\033[0;32m$IN_FILE aye!\033[0m"
+        else
+            echo -e "\033[0;31m$IN_FILE nay!\033[0m"
+            FLAG=false
+        fi
+    done
+
+    echo ""
+
+    if [[ $FLAG == true ]]
+    then
+        echo -e "\033[0;32m$JAVA_FILE passes!\033[0m"
+    else
+        echo -e "\033[0;31m$JAVA_FILE vetoed!\033[0m"
+    fi
 elif [[ $1 == "clean" ]]
 then
     rm -r target/*
