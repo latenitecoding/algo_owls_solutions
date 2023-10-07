@@ -17,7 +17,7 @@ then
         CP="$CP$CP_DELIM$DIR"
     done
 
-    javac -d target -cp "$CP" "src/$MAIN.java"
+    javac -encoding UTF-8 -d target -cp "$CP" "src/$MAIN.java"
 
     if [[ $1 == "run" ]]
     then
