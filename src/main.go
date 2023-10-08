@@ -18,7 +18,7 @@ func main() {
 
 	flag.Parse()
 
-	if *helpFlag || *hFlag || (*solutionFlag == "" || *sFlag == "") {
+	if *helpFlag || *hFlag || (*solutionFlag == "" && *sFlag == "") {
 		fmt.Println("Usage: algo_owls --solution <SOLUTION>")
 		fmt.Println()
 		fmt.Println("Options:")
