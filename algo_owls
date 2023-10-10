@@ -40,7 +40,7 @@ then
 elif [[ $1 == "init" ]]
 then
     mkdir -p src/solutions/${2%/*}
-    cp hello.go src/solutions/$2
+    cp hello.go src/solutions/$2.go
 elif [[ $1 == "clean" ]]
 then
     rm -r target/*
