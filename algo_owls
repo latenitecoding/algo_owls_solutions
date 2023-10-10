@@ -1,7 +1,7 @@
 #!/bin/bash
-# NOTE: Update these variables to target different files with this script. #
+
 MAIN="main.go"
-# ======================================================================== #
+
 if [[ $1 == -* ]]
 then
     go run src/$MAIN $@
@@ -37,6 +37,10 @@ then
     else
         echo -e "\033[0;31m$JAVA_FILE vetoed!\033[0m"
     fi
+elif [[ $1 == "init" ]]
+then
+    mkdir -p src/solutions/${2%/*}
+    cp hello.go src/solutions/$2
 elif [[ $1 == "clean" ]]
 then
     rm -r target/*
