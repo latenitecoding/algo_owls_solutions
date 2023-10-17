@@ -10,7 +10,7 @@ else
     JAVA_FILE=$(find src/ -name "$1.java")
 
     CLASS_PATH="${JAVA_FILE%/*}"
-    CLASS_PATH="${CLASS_PATH/src/build}"
+    CLASS_PATH="${CLASS_PATH/src/target}"
 
     javac -d $CLASS_PATH $JAVA_FILE
 
@@ -32,8 +32,8 @@ else
 
     if [[ $FLAG == true ]]
     then
-        echo -e "\033[0;32m$RS_FILE passes!\033[0m"
+        echo -e "\033[0;32m$JAVA_FILE passes!\033[0m"
     else
-        echo -e "\033[0;31m$RS_FILE vetoed!\033[0m"
+        echo -e "\033[0;31m$JAVA_FILE vetoed!\033[0m"
     fi
 fi

@@ -1,0 +1,36 @@
+#!/bin/bash
+# NOTE: Update these variables to target different files with this script. #
+MAIN="Main"
+# ======================================================================== #
+CP_DELIM=":"
+if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
+    CP_DELIM=";" # changes to ; for Windows
+fi
+# ======================================================================== #
+if [[ $1 == -* ]]
+then
+    java -cp target $MAIN $@
+elif [[ $1 == "build" || $1 == "run" ]]
+then
+    CP=""
+    for DIR in $(find src -type d) ; do
+        CP="$CP$CP_DELIM$DIR"
+    done
+
+    javac -d target -cp "$CP" "src/$MAIN.java"
+
+    if [[ $1 == "run" ]]
+    then
+        java -cp target $MAIN "${@:2}"
+    fi
+elif [[ $1 == "test" ]]
+then
+    ./quest $2
+elif [[ $1 == "clean" ]]
+then
+    rm -r target/*
+else
+    echo "Usage: algo_owls --solution <SOLUTION>"
+    echo ""
+    echo "For more information, try '--help'."
+fi
