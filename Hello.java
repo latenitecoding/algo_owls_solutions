@@ -28,6 +28,6 @@ public class Hello {
 
   public static void main(String[] args) throws IOException {
     String line = reader.readLine();
-    System.out.print(line);
+    System.out.println(line);
   }
 }
