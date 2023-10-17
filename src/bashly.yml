@@ -1,0 +1,360 @@
+name: algo_owls
+help: Use to create, execute, and test solutions to competitive programming problems
+version: 0.2.0
+
+commands:
+- name: build
+  alias: b
+  help: Compile target solution from the 'options.solutions_dir' directory
+
+  args:
+  - name: solution
+    required: true
+    help: The name of the target solution in the 'options.solutions_dir' directory
+
+  flags:
+  - long: --build_cmd
+    short: -x
+    arg: command
+    help: The build command to compile the program 
+  - long: --build_flags
+    short: -I
+    arg: flags
+    help: The compiler flags to use when compiling the program
+  - long: --build_out
+    short: -o
+    arg: flag
+    help: The compiler flag to specify the output directory
+  - long: --build_sources
+    short: -s
+    arg: flag
+    help: The compiler flag to include sources in the build
+  - long: --ext
+    short: -e
+    arg: extension
+    help: The file extension to use for the solution file
+    conflicts: [--no_ext]
+  - long: --local
+    short: -l
+    help: Use target solution's local directory in build source
+  - long: --no_ext
+    short: -n
+    help: Ignore file extensions when compiling the program
+    conflicts: [--ext]
+
+  examples:
+  - algo_owls build fadingwind
+  - algo_owls build streetsahead --ext .java --build_cmd javac --build_out "-d options.target_dir" --build_sources "-cp options.solutions_dir"
+  - algo_owls build restaurantopening --ext .java --build_cmd javac --build_out "-d options.target_dir" --build_sources "-cp ..." --local
+
+- name: config
+  alias: c
+  help: Manage the algo_owls config file
+
+  commands:
+  - name: get
+    alias: g
+    help: Read a value from the config file
+
+    args:
+    - name: key
+      required: true
+      help: One or more config keys
+      repeatable: true
+
+    examples:
+    - algo_owls config get TODO
+
+  - name: list
+    alias: l
+    help: Show entire config file
+
+    examples:
+    - algo_owls config list
+
+  - name: set
+    alias: s
+    help: Save a value in the config file
+
+    args:
+    - name: entry
+      required: true
+      help: One or more config key-value pairs
+      repeatable: true
+
+    examples:
+    - algo_owls config set build.cmd=javac
+    - algo_owls config set build_flags.encoding="--encoding UTF-8" build_flags.out="-d options.target_dir"
+
+- name: fetch
+  alias: d
+  help: Download test cases for target solution to the 'options.tests_dir' directory
+
+  args:
+  - name: solution
+    required: true
+    help: The name of the target solution in the 'options.solutions_dir' directory
+
+  flags:
+  - long: --addr
+    short: -s
+    arg: address
+    help: The address of the input test cases and provided answers
+  - long: --ans_ext
+    short: -a
+    arg: extension
+    help: The file extension of the provided answers
+  - long: --in_ext
+    short: -i
+    arg: extension
+    help: The file extension of the input test cases
+  - long: --map_ans
+    short: -A
+    arg: extension
+    help: The desired file extension of the provided answers
+  - long: --map_in
+    short: -I
+    arg: extension
+    help: The desired file extension of the input test cases
+  - long: --no_unzip
+    short: -n
+    help: Download data into 'options.tests_dir' directory without unzipping
+
+- name: fmt
+  alias: f
+  help: Format the target solution from the 'options.solutions_dir' directory
+
+  args:
+  - name: solution
+    required: true
+    help: The name of the target solution in the 'options.solutions_dir' directory
+
+  flags:
+  - long: --fmt_cmd
+    short: -x
+    arg: command
+    help: The command to format the target solution 
+  - long: --fmt_flags
+    short: -I
+    arg: flags
+    help: The flags to use when formatting the target solution
+  - long: --ext
+    short: -e
+    arg: extension
+    help: The file extension to use for the solution file
+    conflicts: [--no_ext]
+  - long: --no_ext
+    short: -n
+    help: Ignore file extensions when formatting the program
+    conflicts: [--ext]
+
+  examples:
+  - algo_owls fmt fadingwind
+  - algo_owls fmt streetsahead --ext .java --fmt_cmd "java -jar lib/google-java-format.jar" --fmt_flags "--replace --skip-javadoc-formatting" 
+
+- name: init
+  alias: i
+  help: Create solution file from a template (if desired)
+
+  args:
+  - name: solution
+    required: true
+    help: The path to the target solution relative to the 'options.solutions_dir' directory
+
+  flags:
+  - long: --ext
+    short: -e
+    arg: extension
+    help: The file extension to use for the solution and template files
+    conflicts: [--no_ext]
+  - long: --no_ext
+    short: -n
+    help: Ignore file extensions when initializing the solution file
+    conflicts: [--ext]
+  - long: --overwrite
+    short: -o
+    help: Overwrite target solution if it exists
+  - long: --template
+    short: -t
+    arg: template
+    help: "The path to the target template relative to the CWD"
+    conflicts: [--touch]
+  - long: --touch
+    short: -c
+    help: Create a blank solution instead of copying from a template file
+    conflicts: [--template]
+
+  examples:
+  - algo_owls init fadingwind
+  - algo_owls init streetsahead --ext .java
+  - algo_owls init restaurantopening --ext .java --template ./solutions/streetsahead
+  - algo_owls init huntthewumpus --touch
+
+- name: quest
+  alias: q
+  help: Run target solution against each input file in 'options.test_dir' comparing results to adjacent answers
+
+  args:
+  - name: solution
+    required: true
+    help: The name of the target solution from the 'options.solutions_dir' directory
+
+  flags:
+  - long: --all
+    help: Run all tests regardless of failures
+  - long: --ans_ext
+    short: -a
+    arg: extension
+    help: The file extension of the provided answers
+  - long: --build
+    short: -b
+    help: Execute the default build command prior to questing the target program
+    conflicts: [--no_build]
+  - long: --ext
+    short: -e
+    arg: extension
+    help: The file extension to use for the target solution
+    conflicts: [--no_ext]
+  - long: --in_ext
+    short: -i
+    arg: extension
+    help: The file extension of the input test cases
+  - long: --no_build
+    short: -d
+    help: Ignore the default build command prior to questing the target program
+    conflicts: [--build]
+  - long: --no_ext
+    short: -n
+    help: Ignore extensions when questing the target solution
+    conflicts: [--ext]
+
+  examples:
+  - algo_owls quest fadingwind
+  - algo_owls quest streetsahead -ext .class
+  - algo_owls quest restaurantopening --in_ext .in --ans_ext .ans
+  - algo_owls quest huntthewumpus --all
+
+- name: run
+  alias: r
+  help: Run target program
+
+  args:
+  - name: solution
+    required: true
+    help: The name of the target program from the 'options.solutions_dir' directory
+
+  flags:
+  - long: --build
+    short: -b
+    help: Execute the default build command prior to running the target program
+    conflicts: [--no_build]
+  - long: --ext
+    short: -e
+    arg: extension
+    help: The file extension to use for the target program
+    conflicts: [--no_ext]
+  - long: --local
+    short: -l
+    help: Use the target program's local directory from 'options.target_dir' in the runtime source
+    conflicts: [--use_source]
+  - long: --name_only
+    short: -N
+    help: Use only the target program's name when executing the program
+  - long: --no_build
+    short: -d
+    help: Ignore the default build command prior to running the target program
+    conflicts: [--build]
+  - long: --no_ext
+    short: -n
+    help: Ignore extensions when executing the target program
+    conflicts: [--ext]
+  - long: --quiet
+    short: -q
+    help: Suppress all output from algo_owls when executing the target program
+  - long: --run_cmd
+    short: -x
+    arg: command
+    help: The run command to use to execute the program
+  - long: --run_flags
+    short: -I
+    arg: flags
+    help: The runtime flags to use when executing the program
+  - long: --run_sources
+    short: -s
+    arg: flag
+    help: The runtime flag to include sources in the execution
+  - long: --use_source
+    short: -u
+    help: Use the target program's local directory from 'options.solutions_dir' in the runtime source
+    conflicts: [--local]
+
+  examples:
+  - algo_owls run fadingwind
+  - algo_owls run streetsahead --ext .class --run_cmd java --run_flags "-XX:+UseSerialGC" --run_sources "-cp options.target_dir"
+  - algo_owls run restaurantopening --ext .class --run_cmd java --run_flags "-XX:+UseSerialGC" --run_sources "-cp ..." --local
+  - algo_owls run huntthewumpus --ext .py --run_cmd python3 --use_source
+  - algo_owls run colortubes --quiet
+
+- name: submit
+  alias: s
+  help: Commits and pushes target solution using git
+
+  args:
+  - name: solution
+    required: true
+    help: The name of the target solution from the 'options.solutions_dir' directory
+
+  flags:
+  - long: --branch
+    short: -b
+    arg: branch
+    help: The branch to commit to
+  - long: --ext
+    short: -e
+    arg: extension
+    help: The file extension to use for the solution
+    conflicts: [--no_ext]
+  - long: --fmt
+    short: -p
+    help: Apply default formatting to target solution before committing
+    conflicts: [--no_fmt]
+  - long: --message
+    short: -m
+    arg: message
+    help: Provide custom commit message
+  - long: --no_ext
+    short: -n
+    help: Ignore extensions when executing the target solution
+    conflicts: [--ext]
+  - long: --no_fmt
+    short: -q
+    help: Ignore any formatting of target solution before committing
+    conflicts: [--fmt]
+  - long: --remote
+    short: -r
+    arg: remote
+    help: The remote to push to
+
+  examples:
+  - algo_owls submit fadingwind
+  - algo_owls submit streetsahead --ext .java --branch hotjava --remote origin
+  - algo_owls submit restaurantopening --ext .java --fmt
+
+- name: wipe
+  alias: w
+  help: Wipes all files from the 'options.target_dir' and/or 'options.tests_dir'
+
+  flags:
+  - long: --all
+    short: -a
+    help: Wipes all files from the 'options.target_dir' and 'options.tests_dir'
+    conflicts: [--tests]
+  - long: --tests
+    short: -t
+    help: Wipes only the files from the 'options.tests_dir'
+    conflicts: [--all]
+
+  examples:
+  - algo_owls wipe
+  - algo_owls wipe --tests
+  - algo_owls wipe --all
