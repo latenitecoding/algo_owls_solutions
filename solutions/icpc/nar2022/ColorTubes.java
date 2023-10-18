@@ -3,13 +3,13 @@ import java.util.*;
 import java.util.stream.*;
 
 public class ColorTubes {
-  
+
   private static boolean DEBUG = false;
   private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-  //========================================================
+  // ========================================================
   // StdIn Helpers
-  //========================================================
+  // ========================================================
 
   @SuppressWarnings("unused")
   private static int next() throws IOException {
@@ -18,9 +18,7 @@ public class ColorTubes {
 
   @SuppressWarnings("unused")
   private static int[] nextTuple() throws IOException {
-    return Arrays.stream(reader.readLine().split(" "))
-      .mapToInt(Integer::parseInt)
-      .toArray();
+    return Arrays.stream(reader.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
   }
 
   @SuppressWarnings("unused")
@@ -35,15 +33,13 @@ public class ColorTubes {
   private static void print(int[][] arr) {
     if (!DEBUG) return;
     System.out.println("");
-    for (int[] row : arr) {
-      System.out.println(Arrays.toString(row));
-    }
+    for (int[] row : arr) System.out.println(Arrays.toString(row));
     System.out.println("");
   }
 
-  //========================================================
+  // ========================================================
   // Solution
-  //========================================================
+  // ========================================================
 
   private static final int TOP = 2;
   private static final int MID = 1;

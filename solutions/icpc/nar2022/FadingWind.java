@@ -33,9 +33,7 @@ public class FadingWind {
   private static void print(int[][] arr) {
     if (!DEBUG) return;
     System.out.println("");
-    for (int[] row : arr) {
-      System.out.println(Arrays.toString(row));
-    }
+    for (int[] row : arr) System.out.println(Arrays.toString(row));
     System.out.println("");
   }
 
