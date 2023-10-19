@@ -6,8 +6,8 @@ Problems and test cases can be found at [USACO](http://www.usaco.org/index.php?p
 
 **Bronze**
 
-- [ ] [Cow College](http://www.usaco.org/index.php?page=viewproblem2&cpid=1251)
-- [ ] [Feeding the Cows](http://www.usaco.org/index.php?page=viewproblem2&cpid=1252)
+- [x] [Cow College](http://www.usaco.org/index.php?page=viewproblem2&cpid=1251)
+- [x] [Feeding the Cows](http://www.usaco.org/index.php?page=viewproblem2&cpid=1252)
 - [ ] [Reverse Engineering](http://www.usaco.org/index.php?page=viewproblem2&cpid=1253)
 
 **Silver**
