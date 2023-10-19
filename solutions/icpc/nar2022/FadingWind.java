@@ -11,7 +11,20 @@ public class FadingWind {
   // Helpers
   // ========================================================
 
-  private static record Tuple(int h, int k, int v, int s) {}
+  private static class Tuple {
+    int h, k, v, s;
+
+    public Tuple(int h, int k, int v, int s) {
+      this.h = h;
+      this.k = k;
+      this.v = v;
+      this.s = s;
+    }
+
+    public String toString() {
+      return String.format("Tuple(%d, %d, %d, %d)", h, k, v, s);
+    }
+  }
 
   @SuppressWarnings("unused")
   private static int next() throws IOException {

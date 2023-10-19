@@ -11,11 +11,33 @@ public class FamilyVisits {
   // Helpers
   // ========================================================
 
-  private static record Tuple(int n, int d) {}
+  private static class Tuple {
+    int n, d;
 
-  private static record Day(int mess, int clean) {
+    public Tuple(int n, int d) {
+      this.n = n;
+      this.d = d;
+    }
+
+    public String toString() {
+      return String.format("Tuple(%d, %d)", n, d);
+    }
+  }
+
+  private static class Day {
+    int mess, clean;
+
     static Day From(Tuple tuple) {
       return new Day(tuple.n, tuple.d);
+    }
+
+    public Day(int mess, int clean) {
+      this.clean = clean;
+      this.mess = mess;
+    }
+
+    public String toString() {
+      return String.format("Tuple(%d, %d)", mess, clean);
     }
   }
 
@@ -108,6 +130,7 @@ public class FamilyVisits {
         cap -= day.mess;
         if (cap < 0) return -1;
       }
+
       heap.clear();
       cap = 0;
       prevVisit = visit - 1;
