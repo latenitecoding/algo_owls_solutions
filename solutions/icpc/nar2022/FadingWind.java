@@ -4,12 +4,14 @@ import java.util.stream.*;
 
 public class FadingWind {
 
-  private static boolean DEBUG = false;
+  private static final boolean DEBUG = false;
   private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
   // ========================================================
-  // StdIn Helpers
+  // Helpers
   // ========================================================
+
+  private static record Tuple(int h, int k, int v, int s) {}
 
   @SuppressWarnings("unused")
   private static int next() throws IOException {
@@ -17,23 +19,53 @@ public class FadingWind {
   }
 
   @SuppressWarnings("unused")
-  private static int[] nextTuple() throws IOException {
+  private static int[] nextArray() throws IOException {
     return Arrays.stream(reader.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
   }
 
   @SuppressWarnings("unused")
-  private static void print(int[] arr) {
+  private static Tuple nextTuple() throws IOException {
+    String[] line = reader.readLine().split(" ");
+    return new Tuple(
+        Integer.parseInt(line[0]),
+        Integer.parseInt(line[1]),
+        Integer.parseInt(line[2]),
+        Integer.parseInt(line[3]));
+  }
+
+  @SuppressWarnings("unused")
+  private static void print(String label, int[] arr) {
     if (!DEBUG) return;
     System.out.println("");
+    System.out.println("> " + label);
     System.out.println(Arrays.toString(arr));
     System.out.println("");
   }
 
   @SuppressWarnings("unused")
-  private static void print(int[][] arr) {
+  private static void print(String label, int[][] arr) {
     if (!DEBUG) return;
     System.out.println("");
+    System.out.println("> " + label);
     for (int[] row : arr) System.out.println(Arrays.toString(row));
+    System.out.println("");
+  }
+
+  @SuppressWarnings("unused")
+  private static <E> void print(String label, E e) {
+    if (!DEBUG) return;
+    System.out.println("");
+    System.out.println("> " + label);
+    System.out.println(e);
+    System.out.println("");
+  }
+
+  @SuppressWarnings("unused")
+  private static <E> void print(String label, E[] arr) {
+    if (!DEBUG) return;
+    System.out.println("");
+    System.out.println("> " + label);
+    for (E e : arr) System.out.println(e);
     System.out.println("");
   }
 
@@ -42,29 +74,22 @@ public class FadingWind {
   // ========================================================
 
   public static void main(String[] args) throws IOException {
-    int[] hkvs = nextTuple();
-    int h = hkvs[0], k = hkvs[1], v = hkvs[2], s = hkvs[3], dist = 0;
+    Tuple in = nextTuple();
+    int h = in.h, k = in.k, v = in.v, s = in.s, dist = 0;
+
     while (h > 0) {
       v += s;
       v -= Math.max(1, v / 10);
-      if (v >= k) {
-        h++;
-      }
+      if (v >= k) h++;
       if (0 < v && v < k) {
         h--;
-        if (h == 0) {
-          v = 0;
-        }
+        if (h == 0) v = 0;
       }
-      if (v <= 0) {
-        h = 0;
-        v = 0;
-      }
+      if (v <= 0) h = v = 0;
       dist += v;
-      if (s > 0) {
-        s--;
-      }
+      if (s > 0) s--;
     }
+
     System.out.println(dist);
   }
 }
