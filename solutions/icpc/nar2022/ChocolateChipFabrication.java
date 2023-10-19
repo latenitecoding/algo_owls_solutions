@@ -5,76 +5,6 @@ import java.util.stream.*;
 public class ChocolateChipFabrication {
 
   private static final boolean DEBUG = false;
-  private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
-  // ========================================================
-  // Helpers
-  // ========================================================
-
-  private static class Tuple {
-    int n, m;
-
-    public Tuple(int n, int m) {
-      this.n = n;
-      this.m = m;
-    }
-
-    public String toString() {
-      return String.format("Tuple(%d, %d)", n, m);
-    }
-  }
-
-  @SuppressWarnings("unused")
-  private static int next() throws IOException {
-    return Integer.parseInt(reader.readLine());
-  }
-
-  @SuppressWarnings("unused")
-  private static int[] nextArray() throws IOException {
-    return Arrays.stream(reader.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-  }
-
-  @SuppressWarnings("unused")
-  private static Tuple nextTuple() throws IOException {
-    String[] line = reader.readLine().split(" ");
-    return new Tuple(Integer.parseInt(line[0]), Integer.parseInt(line[1]));
-  }
-
-  @SuppressWarnings("unused")
-  private static void print(String label, int[] arr) {
-    if (!DEBUG) return;
-    System.out.println("");
-    System.out.println("> " + label);
-    System.out.println(Arrays.toString(arr));
-    System.out.println("");
-  }
-
-  @SuppressWarnings("unused")
-  private static void print(String label, int[][] arr) {
-    if (!DEBUG) return;
-    System.out.println("");
-    System.out.println("> " + label);
-    for (int[] row : arr) System.out.println(Arrays.toString(row));
-    System.out.println("");
-  }
-
-  @SuppressWarnings("unused")
-  private static <E> void print(String label, E e) {
-    if (!DEBUG) return;
-    System.out.println("");
-    System.out.println("> " + label);
-    System.out.println(e);
-    System.out.println("");
-  }
-
-  @SuppressWarnings("unused")
-  private static <E> void print(String label, E[] arr) {
-    if (!DEBUG) return;
-    System.out.println("");
-    System.out.println("> " + label);
-    for (E e : arr) System.out.println(e);
-    System.out.println("");
-  }
 
   // ========================================================
   // Solution
@@ -119,6 +49,7 @@ public class ChocolateChipFabrication {
     for (Tuple t : q) grid[t.n][t.m] = false;
 
     print("Q", q);
+    print("Cookie", grid);
 
     int bakes = 0;
     while (!q.isEmpty()) {
@@ -145,8 +76,79 @@ public class ChocolateChipFabrication {
       }
       bakes++;
       print(String.format("Bake %d", bakes), q);
+      print("Cookie", grid);
     }
 
     return bakes;
+  }
+
+  // ========================================================
+  // Helpers
+  // ========================================================
+
+  private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+  private static class Tuple {
+    int n, m;
+
+    public Tuple(int... args) {
+      this.n = args[0];
+      this.m = args[1];
+    }
+
+    public String toString() {
+      return String.format("Tuple(%d, %d)", n, m);
+    }
+  }
+
+  @SuppressWarnings("unused")
+  private static int next() throws IOException {
+    return Integer.parseInt(reader.readLine());
+  }
+
+  @SuppressWarnings("unused")
+  private static int[] nextArray() throws IOException {
+    return Arrays.stream(reader.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+  }
+
+  @SuppressWarnings("unused")
+  private static Tuple nextTuple() throws IOException {
+    return new Tuple(nextArray());
+  }
+
+  @SuppressWarnings("unused")
+  private static void print(String label, int[] arr) {
+    if (!DEBUG) return;
+    System.out.println("");
+    System.out.println("> " + label);
+    System.out.println(Arrays.toString(arr));
+    System.out.println("");
+  }
+
+  @SuppressWarnings("unused")
+  private static void print(String label, boolean[][] arr) {
+    if (!DEBUG) return;
+    System.out.println("");
+    System.out.println("> " + label);
+    for (var row : arr) System.out.println(Arrays.toString(row));
+    System.out.println("");
+  }
+
+  @SuppressWarnings("unused")
+  private static void print(String label, Object o) {
+    if (!DEBUG) return;
+    System.out.println("");
+    System.out.println("> " + label);
+    System.out.println(o);
+    System.out.println("");
+  }
+
+  @SuppressWarnings("unused")
+  private static void print(String label, Object[] arr) {
+    if (!DEBUG) return;
+    System.out.println("");
+    System.out.println("> " + label);
+    for (var o : arr) System.out.println(o);
+    System.out.println("");
   }
 }

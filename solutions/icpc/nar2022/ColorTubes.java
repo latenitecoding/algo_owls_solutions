@@ -5,118 +5,6 @@ import java.util.stream.*;
 public class ColorTubes {
 
   private static final boolean DEBUG = false;
-  private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
-  // ========================================================
-  // Helpers
-  // ========================================================
-
-  private static class Tube implements Iterable<Integer> {
-    int bot, mid, top;
-
-    public Tube(int bot, int mid, int top) {
-      this.bot = bot;
-      this.mid = mid;
-      this.top = top;
-    }
-
-    public int findNonMatch(int c) {
-      if (bot != c) return bot;
-      if (mid != c) return mid;
-      if (top != c) return top;
-      throw new RuntimeException("Could not find non-match for color");
-    }
-
-    public int getTopColor() {
-      if (top != EMPTY) return top;
-      if (mid != EMPTY) return mid;
-      if (bot != EMPTY) return bot;
-      return EMPTY;
-    }
-
-    public boolean isEmpty() {
-      return bot == EMPTY;
-    }
-
-    public boolean isUniformColor() {
-      return bot == mid && mid == top;
-    }
-
-    public void replaceLeftMatch(int c1, int c2) {
-      if (bot == c1) bot = c2;
-      else if (mid == c1) mid = c2;
-      else if (top == c1) top = c2;
-      else throw new RuntimeException("No left match");
-    }
-
-    public void replaceRightMatch(int c1, int c2) {
-      if (top == c1) top = c2;
-      else if (mid == c1) mid = c2;
-      else if (bot == c1) bot = c2;
-      else throw new RuntimeException("No right match");
-    }
-
-    public Iterator<Integer> iterator() {
-      return Arrays.stream(new int[] {bot, mid, top}).iterator();
-    }
-
-    public String toString() {
-      return String.format("Tube(%d, %d, %d)", bot, mid, top);
-    }
-  }
-
-  @SuppressWarnings("unused")
-  private static int next() throws IOException {
-    return Integer.parseInt(reader.readLine());
-  }
-
-  @SuppressWarnings("unused")
-  private static int[] nextArray() throws IOException {
-    return Arrays.stream(reader.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-  }
-
-  @SuppressWarnings("unused")
-  private static Tube nextTube() throws IOException {
-    String[] line = reader.readLine().split(" ");
-    return new Tube(
-        Integer.parseInt(line[0]), Integer.parseInt(line[1]), Integer.parseInt(line[2]));
-  }
-
-  @SuppressWarnings("unused")
-  private static void print(String label, int[] arr) {
-    if (!DEBUG) return;
-    System.out.println("");
-    System.out.println("> " + label);
-    System.out.println(Arrays.toString(arr));
-    System.out.println("");
-  }
-
-  @SuppressWarnings("unused")
-  private static void print(String label, int[][] arr) {
-    if (!DEBUG) return;
-    System.out.println("");
-    System.out.println("> " + label);
-    for (int[] row : arr) System.out.println(Arrays.toString(row));
-    System.out.println("");
-  }
-
-  @SuppressWarnings("unused")
-  private static <E> void print(String label, E e) {
-    if (!DEBUG) return;
-    System.out.println("");
-    System.out.println("> " + label);
-    System.out.println(e);
-    System.out.println("");
-  }
-
-  @SuppressWarnings("unused")
-  private static <E> void print(String label, E[] arr) {
-    if (!DEBUG) return;
-    System.out.println("");
-    System.out.println("> " + label);
-    for (E e : arr) System.out.println(e);
-    System.out.println("");
-  }
 
   // ========================================================
   // Solution
@@ -136,7 +24,7 @@ public class ColorTubes {
       // store tubes as 1-indexed so that 0 can be used as a sentinel value
       // 0 is already a significant value since it represents the EMPTY color
       // c will be used for colors
-      for (int c : tube) locs[c].replaceLeftMatch(EMPTY, t + 1);
+      for (int c : tube) locs[c].replaceBotMatch(EMPTY, t + 1);
       tubes[t] = tube;
     }
 
@@ -226,11 +114,123 @@ public class ColorTubes {
   private static void moveBall(Tube[] tubes, int t1, int t2, Tube[] locs, List<String> moves) {
     if (t1 == t2) throw new RuntimeException("Cannot move ball from a tube to itself");
     int c = tubes[t1].getTopColor();
-    tubes[t1].replaceRightMatch(c, EMPTY);
-    tubes[t2].replaceLeftMatch(EMPTY, c);
-    locs[c].replaceLeftMatch(t1 + 1, t2 + 1);
-    locs[EMPTY].replaceLeftMatch(t2 + 1, t1 + 1);
+    tubes[t1].replaceTopMatch(c, EMPTY);
+    tubes[t2].replaceBotMatch(EMPTY, c);
+    locs[c].replaceBotMatch(t1 + 1, t2 + 1);
+    locs[EMPTY].replaceBotMatch(t2 + 1, t1 + 1);
     // tubes are 0-indexed but must be printed 1-indexed
     moves.add(String.format("%d %d", t1 + 1, t2 + 1));
+  }
+
+
+  // ========================================================
+  // Helpers
+  // ========================================================
+
+  private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+  private static class Tube implements Iterable<Integer> {
+    int bot, mid, top;
+
+    public Tube(int... args) {
+      this.bot = args[0];
+      this.mid = args[1];
+      this.top = args[2];
+    }
+
+    public int findNonMatch(int c) {
+      if (bot != c) return bot;
+      if (mid != c) return mid;
+      if (top != c) return top;
+      throw new RuntimeException("No non-match");
+    }
+
+    public int getTopColor() {
+      if (top != EMPTY) return top;
+      if (mid != EMPTY) return mid;
+      if (bot != EMPTY) return bot;
+      return EMPTY;
+    }
+
+    public boolean isEmpty() {
+      return bot == EMPTY;
+    }
+
+    public boolean isUniformColor() {
+      return bot == mid && mid == top;
+    }
+
+    public void replaceBotMatch(int c1, int c2) {
+      if (bot == c1) bot = c2;
+      else if (mid == c1) mid = c2;
+      else if (top == c1) top = c2;
+      else throw new RuntimeException("No bot match");
+    }
+
+    public void replaceTopMatch(int c1, int c2) {
+      if (top == c1) top = c2;
+      else if (mid == c1) mid = c2;
+      else if (bot == c1) bot = c2;
+      else throw new RuntimeException("No top match");
+    }
+
+    public Iterator<Integer> iterator() {
+      return Arrays.stream(new int[] {bot, mid, top}).iterator();
+    }
+
+    public String toString() {
+      return String.format("Tube(%d, %d, %d)", bot, mid, top);
+    }
+  }
+
+  @SuppressWarnings("unused")
+  private static int next() throws IOException {
+    return Integer.parseInt(reader.readLine());
+  }
+
+  @SuppressWarnings("unused")
+  private static int[] nextArray() throws IOException {
+    return Arrays.stream(reader.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+  }
+
+  @SuppressWarnings("unused")
+  private static Tube nextTube() throws IOException {
+    return new Tube(nextArray());
+  }
+
+  @SuppressWarnings("unused")
+  private static void print(String label, int[] arr) {
+    if (!DEBUG) return;
+    System.out.println("");
+    System.out.println("> " + label);
+    System.out.println(Arrays.toString(arr));
+    System.out.println("");
+  }
+
+  @SuppressWarnings("unused")
+  private static void print(String label, int[][] arr) {
+    if (!DEBUG) return;
+    System.out.println("");
+    System.out.println("> " + label);
+    for (int[] row : arr) System.out.println(Arrays.toString(row));
+    System.out.println("");
+  }
+
+  @SuppressWarnings("unused")
+  private static void print(String label, Object o) {
+    if (!DEBUG) return;
+    System.out.println("");
+    System.out.println("> " + label);
+    System.out.println(o);
+    System.out.println("");
+  }
+
+  @SuppressWarnings("unused")
+  private static void print(String label, Object[] arr) {
+    if (!DEBUG) return;
+    System.out.println("");
+    System.out.println("> " + label);
+    for (Object o : arr) System.out.println(o);
+    System.out.println("");
   }
 }

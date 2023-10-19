@@ -5,93 +5,6 @@ import java.util.stream.*;
 public class FamilyVisits {
 
   private static final boolean DEBUG = false;
-  private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
-  // ========================================================
-  // Helpers
-  // ========================================================
-
-  private static class Tuple {
-    int n, d;
-
-    public Tuple(int n, int d) {
-      this.n = n;
-      this.d = d;
-    }
-
-    public String toString() {
-      return String.format("Tuple(%d, %d)", n, d);
-    }
-  }
-
-  private static class Day {
-    int mess, clean;
-
-    static Day From(Tuple tuple) {
-      return new Day(tuple.n, tuple.d);
-    }
-
-    public Day(int mess, int clean) {
-      this.clean = clean;
-      this.mess = mess;
-    }
-
-    public String toString() {
-      return String.format("Tuple(%d, %d)", mess, clean);
-    }
-  }
-
-  @SuppressWarnings("unused")
-  private static int next() throws IOException {
-    return Integer.parseInt(reader.readLine());
-  }
-
-  @SuppressWarnings("unused")
-  private static int[] nextArray() throws IOException {
-    return Arrays.stream(reader.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-  }
-
-  @SuppressWarnings("unused")
-  private static Tuple nextTuple() throws IOException {
-    String[] line = reader.readLine().split(" ");
-    return new Tuple(Integer.parseInt(line[0]), Integer.parseInt(line[1]));
-  }
-
-  @SuppressWarnings("unused")
-  private static void print(String label, int[] arr) {
-    if (!DEBUG) return;
-    System.out.println("");
-    System.out.println("> " + label);
-    System.out.println(Arrays.toString(arr));
-    System.out.println("");
-  }
-
-  @SuppressWarnings("unused")
-  private static void print(String label, int[][] arr) {
-    if (!DEBUG) return;
-    System.out.println("");
-    System.out.println("> " + label);
-    for (int[] row : arr) System.out.println(Arrays.toString(row));
-    System.out.println("");
-  }
-
-  @SuppressWarnings("unused")
-  private static <E> void print(String label, E e) {
-    if (!DEBUG) return;
-    System.out.println("");
-    System.out.println("> " + label);
-    System.out.println(e);
-    System.out.println("");
-  }
-
-  @SuppressWarnings("unused")
-  private static <E> void print(String label, E[] arr) {
-    if (!DEBUG) return;
-    System.out.println("");
-    System.out.println("> " + label);
-    for (E e : arr) System.out.println(e);
-    System.out.println("");
-  }
 
   // ========================================================
   // Solution
@@ -119,6 +32,7 @@ public class FamilyVisits {
     for (int visit : visits) {
       for (int di = visit - 1; di > prevVisit; di--) {
         Day day = days[di];
+
         if (day.clean > 0) heap.add(day);
         if (day.mess == 0) continue;
 
@@ -137,5 +51,92 @@ public class FamilyVisits {
     }
 
     return cleans;
+  }
+
+  // ========================================================
+  // Helpers
+  // ========================================================
+
+  private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+
+  private static class Tuple {
+    int n, d;
+
+    public Tuple(int... args) {
+      this.n = args[0];
+      this.d = args[1];
+    }
+
+    public String toString() {
+      return String.format("Tuple(%d, %d)", n, d);
+    }
+  }
+
+  private static class Day {
+    int mess, clean;
+
+    static Day From(Tuple t) {
+      return new Day(t.n, t.d);
+    }
+
+    public Day(int mess, int clean) {
+      this.clean = clean;
+      this.mess = mess;
+    }
+
+    public String toString() {
+      return String.format("Day(%d, %d)", mess, clean);
+    }
+  }
+
+  @SuppressWarnings("unused")
+  private static int next() throws IOException {
+    return Integer.parseInt(reader.readLine());
+  }
+
+  @SuppressWarnings("unused")
+  private static int[] nextArray() throws IOException {
+    return Arrays.stream(reader.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
+  }
+
+  @SuppressWarnings("unused")
+  private static Tuple nextTuple() throws IOException {
+    return new Tuple(nextArray());
+  }
+
+  @SuppressWarnings("unused")
+  private static void print(String label, int[] arr) {
+    if (!DEBUG) return;
+    System.out.println("");
+    System.out.println("> " + label);
+    System.out.println(Arrays.toString(arr));
+    System.out.println("");
+  }
+
+  @SuppressWarnings("unused")
+  private static void print(String label, int[][] arr) {
+    if (!DEBUG) return;
+    System.out.println("");
+    System.out.println("> " + label);
+    for (var row : arr) System.out.println(Arrays.toString(row));
+    System.out.println("");
+  }
+
+  @SuppressWarnings("unused")
+  private static void print(String label, Object o) {
+    if (!DEBUG) return;
+    System.out.println("");
+    System.out.println("> " + label);
+    System.out.println(o);
+    System.out.println("");
+  }
+
+  @SuppressWarnings("unused")
+  private static void print(String label, Object[] arr) {
+    if (!DEBUG) return;
+    System.out.println("");
+    System.out.println("> " + label);
+    for (var o : arr) System.out.println(o);
+    System.out.println("");
   }
 }
