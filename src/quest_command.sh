@@ -1,6 +1,6 @@
 ini_load .algo_owls.ini
 
-if [[ -z ${args[--no_build]} || ${args[--no_build]} -eq 0 ]]; then
+if [[ -z ${args[--no-build]} || ${args[--no-build]} -eq 0 ]]; then
     if [[ ${ini[settings.auto_build]} == true ]]; then
         ./algo_owls build ${args[solution]}
     elif [[ -n ${args[--build]} && ${args[--build]} -eq 1 ]]; then
@@ -12,31 +12,31 @@ target_name="$(to_snake_case ${args[solution]})"
 target_dir="$(find ${ini[options.tests_dir]} -type d -name $target_name)"
 
 if [[ -z $target_dir ]]; then
-    target_dir="${ini[options.tests_dir]}/**/$target_name/"
+    target_dir="$(fmt_dir ${ini[options.tests_dir]})**/$target_name/"
     echo "algo_owls: $target_dir: No such directory" 1>&2
-    target_dir="${ini[options.tests_dir]}/$target_name"
+    target_dir="$(fmt_dir ${ini[options.tests_dir]})$target_name"
     echo "Try using: mkdir -p $target_dir" 1>&2
     exit 1
 fi
 
 file_ext="$(handle_file_ext)"
 
-run_cmd="./algo_owls run ${args[solution]} --quiet --no_build"
+run_cmd="./algo_owls run ${args[solution]} --quiet --no-build"
 if [[ -n ${args[--ext]} ]]; then
     run_cmd="$run_cmd --ext ${args[--ext]}"
-elif [[ -n ${args[--no_ext]} ]]; then
-    run_cmd="$run_cmd --no_ext"
+elif [[ -n ${args[--no-ext]} ]]; then
+    run_cmd="$run_cmd --no-ext"
 fi
 
 in_ext="${ini[settings.in_ext]}"
-if [[ -n ${args[--in_ext]} ]]; then
-    in_ext="${args[--in_ext]}"
+if [[ -n ${args[--in-ext]} ]]; then
+    in_ext="${args[--in-ext]}"
 fi
 in_ext="$(dot_file_ext $in_ext)"
 
 ans_ext="${ini[settings.ans_ext]}"
-if [[ -n ${args[--ans_ext]} ]]; then
-    ans_ext="${args[--ans_ext]}"
+if [[ -n ${args[--ans-ext]} ]]; then
+    ans_ext="${args[--ans-ext]}"
 fi
 ans_ext="$(dot_file_ext $ans_ext)"
 
